@@ -1,0 +1,24 @@
+﻿<Window x:Class="TestApp.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:TestApp"
+        mc:Ignorable="d"
+        Title="AboutWindow" Height="250" Width="400" Foreground="White" Background="#FF1268BD">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <materialDesign:PackIcon Kind="Zigbee" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                 Width="200" Height="200" Foreground="#FF0C427C"/>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Лабораторная работа №1" HorizontalAlignment="Center"/>
+            <TextBlock Text="Вариант 24" HorizontalAlignment="Center"/>
+            <TextBlock Text="Выполнил студент группы А-05-19" HorizontalAlignment="Center"/>
+            <TextBlock Text="Филиппов Евгений" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Window>

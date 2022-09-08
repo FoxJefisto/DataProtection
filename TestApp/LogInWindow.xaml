@@ -1,0 +1,22 @@
+﻿<Window x:Class="TestApp.LogInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestApp"
+        mc:Ignorable="d"
+        Title="Вход" Height="180" Width="300">
+    <Grid Background="#FF093054">
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Width="250" Background="#FF1268BD">
+            <TextBlock Text="Логин" Margin="0,10,0,0" HorizontalAlignment="Center" Foreground="White"/>
+            <TextBox x:Name="tbLogin" Margin="60,0,60,0" AcceptsReturn="True"/>
+            <TextBlock Text="Пароль" Margin="0,10,0,0" HorizontalAlignment="Center" Foreground="White"/>
+            <PasswordBox x:Name="pbPassword" Margin="60,0,60,0"/>
+            <Button x:Name="btnLogIn" Margin="60, 10, 60, 0" HorizontalContentAlignment="Center" 
+                    Foreground="White" Background="#FF093054"
+                    Content="Вход" IsDefault="True"
+                    Click="btnLogIn_Click"/>
+            <TextBlock Grid.Row="1" x:Name="tbAnswer" Margin="0, 10, 0, 0" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Window>
