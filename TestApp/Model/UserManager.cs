@@ -29,7 +29,7 @@ namespace TestApp.Model
         public (bool state, string message) LogIn(string login, string password)
         {
             bool state = true;
-            string message = "Операция выполнена успешно";
+            string message = "Операция выполнена успешно.";
             login = login.ToLower();
             if (DB.Users.Any(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)))
             {
@@ -37,13 +37,18 @@ namespace TestApp.Model
                 if (CurrentUser == null)
                 {
                     state = false;
-                    message = "Был введен неверный пароль";
+                    message = "Был введен неверный пароль.";
+                }
+                else if (CurrentUser.IsBanned)
+                {
+                    state = false;
+                    message = "Эта учетная запись заблокирована администратором";
                 }
             }
             else
             {
                 state = false;
-                message = "Пользователь с данным логином не найден";
+                message = "Пользователь с данным логином не найден.";
             }
             return (state, message);
         }
@@ -56,8 +61,12 @@ namespace TestApp.Model
         public (bool state, string message) SignUp(string login, string password, bool rootAccess = false, bool ignorePassword = false)
         {
             bool state = true;
-            string message = "Операция выполнена успешно";
+            string message = "Операция выполнена успешно.";
             login = login.ToLower();
+            if(login == "")
+            {
+                return (false, "Логин не может быть пустым.");
+            }
             var matchPassword = Regex.Match(password, @"[0-9]+[\.,:\-""?!;\(\)]+[0-9]+([\.,:\-""?!;\(\)]+[0-9]+)*");
             if (matchPassword.Success || ignorePassword)
             {
@@ -76,13 +85,13 @@ namespace TestApp.Model
                 else
                 {
                     state = false;
-                    message = "Пользователь с таким логином уже существует";
+                    message = "Пользователь с таким логином уже существует.";
                 }
             }
             else
             {
                 state = false;
-                message = "Пароль не соответствует требованиям";
+                message = "Пароль не соответствует требованиям.";
             }
             return (state, message);
         }
@@ -90,42 +99,58 @@ namespace TestApp.Model
         public (bool state, string message) RemoveUser(string login)
         {
             bool state = true;
-            string message = "Операция выполнена успешно";
+            string message = "Операция выполнена успешно.";
             User user = DB.Users.Where(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-            state = user != null;
-            if(state)
+            if(user != null)
             {
-                DB.Users.Remove(user);
-            }
-            else
-            {
-                message = "Пользователь с таким именем не зарегистрирован";
-            }
-            return (state, message);
-        }
-
-        public (bool state, string message) ChangeCurrentUserPassword(string oldPassword, string newPassword)
-        {
-            bool state = true;
-            string message = "Операция выполнена успешно";
-            if (oldPassword == CurrentUser.Password)
-            {
-                var matchPassword = Regex.Match(newPassword, @"[0-9]+[\.,:\-""?!;\(\)]+[0-9]+([\.,:\-""?!;\(\)]+[0-9]+)*");
-                if (!CurrentUser.HasConstraint || matchPassword.Success)
+                if (user.RootAccess != true)
                 {
-                    CurrentUser.Password = newPassword;
-                    DB.SaveDB();
+                    DB.Users.Remove(user);
                 }
                 else
                 {
                     state = false;
-                    message = "Новый пароль не соответствует требованиям";
+                    message = "Невозможно удалить администратора.";
                 }
             }
             else
             {
                 state = false;
-                message = "Старый пароль введен неверно";
+                message = "Пользователь с таким именем не зарегистрирован.";
+            }
+            return (state, message);
+        }
+
+        public (bool state, string message) ChangeCurrentUserPassword(string oldPassword, string newPassword, string verifyPassword)
+        {
+            bool state = true;
+            string message = "Операция выполнена успешно.";
+            if (oldPassword == CurrentUser.Password)
+            {
+                var matchPassword = Regex.Match(newPassword, @"[0-9]+[\.,:\-""?!;\(\)]+[0-9]+([\.,:\-""?!;\(\)]+[0-9]+)*");
+                if (!CurrentUser.HasConstraint || matchPassword.Success)
+                {
+                    if (newPassword == verifyPassword)
+                    {
+                        CurrentUser.Password = newPassword;
+                        DB.SaveDB();
+                    }
+                    else
+                    {
+                        state = false;
+                        message = "Подтверждающий пароль введен неверно.";
+                    }   
+                }
+                else
+                {
+                    state = false;
+                    message = "Новый пароль не соответствует требованиям.";
+                }
+            }
+            else
+            {
+                state = false;
+                message = "Старый пароль введен неверно.";
             }
             return (state, message);
         }
@@ -133,16 +158,16 @@ namespace TestApp.Model
         public ObservableCollection<User> GetAllUsers()
         {
             if (!CurrentUser.RootAccess)
-                throw new Exception("У данного пользователя нет таких прав");
+                throw new Exception("У данного пользователя нет таких прав.");
             return DB.Users;
         }
 
         public (bool state, string message) RegisterLoginForUser(string login)
         {
             if (!CurrentUser.RootAccess)
-                throw new Exception("У данного пользователя нет таких прав");
+                throw new Exception("У данного пользователя нет таких прав.");
             bool state = true;
-            string message = "Операция выполнена успешно";
+            string message = "Операция выполнена успешно.";
             if (!DB.Users.Any(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)))
             {
                 DB.Users.Add(new User(login, "", false));
@@ -150,7 +175,7 @@ namespace TestApp.Model
             else
             {
                 state = false;
-                message = "Пользователь с таким логином уже существует";
+                message = "Пользователь с таким логином уже существует.";
             }
             return (state, message);
         }

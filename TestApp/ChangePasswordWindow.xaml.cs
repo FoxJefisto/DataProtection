@@ -26,7 +26,7 @@ namespace TestApp
 
         private void btnChangePassword_Click(object sender, RoutedEventArgs e)
         {
-            var result = userManager.ChangeCurrentUserPassword(pbOldPassword.Password, pbNewPassword.Password);
+            var result = userManager.ChangeCurrentUserPassword(pbOldPassword.Password, pbNewPassword.Password, pbVerifyPassword.Password);
             tbAnswer.Foreground = Brushes.Red;
             tbAnswer.Text = result.message;
             tbAnswer.ToolTip = "Чередование цифр, знаков препинания и снова цифр.";

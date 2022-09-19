@@ -63,5 +63,23 @@ namespace TestApp
             }
             tbAnswer.Text = result.message;
         }
+
+        private void lvUsers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if((sender as ListView).SelectedItem is User)
+            {
+                tbLogin.Text = ((sender as ListView).SelectedItem as User).Login;
+            }
+        }
+
+        private void cbIsBanned_Checked(object sender, RoutedEventArgs e)
+        {
+            var cb = sender as CheckBox;
+            var user = cb.DataContext as User;
+            if (user.RootAccess)
+            {
+                cb.IsChecked = false;
+            }
+        }
     }
 }

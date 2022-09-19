@@ -18,16 +18,26 @@ namespace TestApp
     /// </summary>
     public partial class SignUpWindow : Window
     {
+        Model.UserManager userManager;
         public SignUpWindow()
         {
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            userManager = (this.Owner as MainWindow).userManager;
+            if (userManager.isFirstExecute)
+            {
+                tbLogin.Text = "admin";
+                tbLogin.IsReadOnly = true;
+            }
+        }
+
         private void btnSignUp_Click(object sender, RoutedEventArgs e)
         {
-            var userManager = (this.Owner as MainWindow).userManager;
-            bool rootAccess = userManager.isFirstExecute;
-            var result = userManager.SignUp(tbLogin.Text, pbPassword.Password, rootAccess);
+            
+            var result = userManager.SignUp(tbLogin.Text, pbPassword.Password, userManager.isFirstExecute);
             tbAnswer.Foreground = Brushes.Red;
             tbAnswer.Text = result.message;
             tbAnswer.ToolTip = "24.	Чередование цифр, знаков препинания и снова цифр.";
@@ -36,5 +46,7 @@ namespace TestApp
                 DialogResult = true;
             }     
         }
+
+        
     }
 }

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestApp"
         mc:Ignorable="d"
-        Title="ManageUsersWindow" Height="300" Width="400" 
+        Title="Управление учетными записями" Height="300" Width="400"
+        MinHeight="300" MinWidth="400"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
     <Grid>
@@ -15,15 +16,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ListView Grid.Row="0" Name="lvUsers" HorizontalAlignment="Center" Margin="0,20,0, 20" 
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                  SelectionChanged="lvUsers_SelectionChanged">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Login}" Header="Логин" Width="auto" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Login}" Header="Логин" Width="auto"/>
                     <GridViewColumn Header="Статус блокировки" Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox IsChecked="{Binding IsBanned}" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding IsBanned}" Checked="cbIsBanned_Checked"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -31,8 +33,8 @@
                     <GridViewColumn Header="Ограничения для пароля" Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox IsChecked="{Binding HasConstraint}" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding HasConstraint}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

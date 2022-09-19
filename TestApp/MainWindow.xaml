@@ -8,25 +8,40 @@
         mc:Ignorable="d"
         Title="Лабораторная работа №1" Height="450" Width="800" Foreground="White"
         Loaded="Window_Loaded">
+    <Window.CommandBindings>
+        <CommandBinding Command="Help" Executed="HelpCommand_Executed"/>
+        <CommandBinding Command="Close" Executed="CloseCommand_Executed"/>
+    </Window.CommandBindings>
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.05*"/>
             <RowDefinition Height="0.2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="#FF1268BD">
+        <Menu>
+            <MenuItem Header="О программе" Command="Help"/>
+            <MenuItem Header="Выход" Command="Close"/>
+        </Menu>
+        <Grid Grid.Row="1" Background="#FF1268BD">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <materialDesign:PackIcon x:Name="btnAbout" Kind="About" Grid.Column="0" Margin="30,0,0,0" Width="50" Height="50"
-                                     HorizontalAlignment="Left" VerticalAlignment="Center" MouseLeftButtonDown="btnAbout_MouseLeftButtonDown" />
+            <Button Grid.Column="0" Margin="30,0,0,0" Width="50" Height="50" Background="Transparent" BorderBrush="Transparent"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center"
+                                      Command="Help">
+                <Button.Content>
+                    <materialDesign:PackIcon x:Name="btnAbout" Kind="About" Width="50" Height="50" Foreground="White"/>
+                </Button.Content>
+            </Button>
             <TextBlock Grid.Column="1" Text="Лабораторная работа №1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
             <StackPanel Grid.Column="2" x:Name="iNotUser" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
-                <Button x:Name="btnSignUp" Content="Регистрация" Margin="10, 5, 10, 5" Padding="10,10,10,10" 
+                <!--<Button x:Name="btnSignUp" Content="Регистрация" Margin="10, 5, 10, 5" Padding="10,10,10,10" 
                         Background="#FF1268BD" Foreground="White" BorderBrush="White"
                         FontSize="16"
-                        Click="btnSignUp_Click"/>
+                        Click="btnSignUp_Click"/>-->
                 <Button x:Name="btnLogIn" Content="Вход" Margin="10, 5, 10, 5" Padding="30,10,30,10"
                         Background="#FF1268BD" Foreground="White" BorderBrush="White"
                         FontSize="16"
@@ -40,9 +55,10 @@
                                 Click="btnChangePassword_Click"/>
                         <Button x:Name="btnManageUsers" Content="Управление пользователями" Visibility="Collapsed"
                                 Click="btnManageUsers_Click"/>
-                        <Separator/>
                         <Button x:Name="btnLogOut" Content="Выход из учетной записи"
                                 Click="btnLogOut_click"/>
+                        <Separator/>
+                        <Button x:Name="btnExit" Content="Завершение работы программы" Command="Close"/>
                     </StackPanel>
                 </materialDesign:PopupBox>
             </StackPanel>

@@ -35,10 +35,14 @@ namespace TestApp.Model
                 var jsonString = File.ReadAllText(path);
                 Users = JsonSerializer.Deserialize<ObservableCollection<User>>(jsonString);
                 Users.CollectionChanged += UserCollectionChanged;
-                return true;
+                if (Users.Count != 0)
+                    return true;
+                else
+                    return false;
             }
             catch(Exception ex)
             {
+                Users.CollectionChanged += UserCollectionChanged;
                 return false;
             }
         }
