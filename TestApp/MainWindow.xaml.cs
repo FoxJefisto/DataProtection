@@ -90,8 +90,16 @@ namespace TestApp
 
         private void btnLogOut_click(object sender, RoutedEventArgs e)
         {
-            userManager.LogOut();
-            SetControlsToLogoutState();
+            if (userManager.CurrentUser.Password == "")
+            {
+                MessageBox.Show(messageBoxText:"Вы забыли установить пароль.");
+                btnChangePassword_Click(sender, null);
+            }
+            else
+            {
+                userManager.LogOut();
+                SetControlsToLogoutState();
+            }
         }
 
         //private void btnSignUp_Click(object sender, RoutedEventArgs e)
