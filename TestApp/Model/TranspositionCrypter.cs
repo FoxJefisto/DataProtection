@@ -55,7 +55,7 @@ namespace TestApp.Model
                     result += transposition[j];
                 }
             }
-            return result.Trim();
+            return result;
         }
 
         public string Decrypt(string text, string userName)
@@ -74,7 +74,7 @@ namespace TestApp.Model
                     result += transposition[j];
                 }
             }
-            return result;
+            return result.Trim();
         }
 
         protected TranspositionCrypter() { }

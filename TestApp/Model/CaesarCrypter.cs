@@ -41,9 +41,13 @@ namespace TestApp.Model
                 {
                     output += CipherRussian(ch, key);
                 }
-                else
+                else if (matchEnglish.Success)
                 {
                     output += CipherEnglish(ch, key);
+                }
+                else
+                {
+                    output += ch;
                 }
 
             }
@@ -61,9 +65,13 @@ namespace TestApp.Model
                 {
                     output += CipherRussian(ch, 33 - key);
                 }
-                else
+                else if (matchEnglish.Success)
                 {
                     output += CipherEnglish(ch, 26 - key);
+                }
+                else
+                {
+                    output += ch;
                 }
             }
             return output;

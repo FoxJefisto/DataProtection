@@ -15,6 +15,8 @@ namespace TestApp.Model
         private Database DB { get; set; }
         public User CurrentUser { get; set; } = null;
 
+        public Crypter crypter;
+
         public string pathDatabase;
 
         public bool isFirstExecute;
@@ -23,6 +25,7 @@ namespace TestApp.Model
         {
             this.pathDatabase = pathDatabase;
             DB = new Database(pathDatabase);
+            crypter = Crypter.GetInstance();
             isFirstExecute = !DB.LoadFromDB();
         }
 
@@ -31,17 +34,19 @@ namespace TestApp.Model
             bool state = true;
             string message = "Операция выполнена успешно.";
             login = login.ToLower();
-            if (DB.Users.Any(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)))
+            CurrentUser = DB.Users.FirstOrDefault(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase));
+            if (CurrentUser != null)
             {
-                CurrentUser = DB.Users.Where(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase) && x.Password == password).FirstOrDefault();
-                if (CurrentUser == null)
+                if (!CheckPassword(password))
                 {
                     state = false;
+                    CurrentUser = null;
                     message = "Был введен неверный пароль.";
                 }
                 else if (CurrentUser.IsBanned)
                 {
                     state = false;
+                    CurrentUser = null;
                     message = "Эта учетная запись заблокирована администратором";
                 }
             }
@@ -63,7 +68,7 @@ namespace TestApp.Model
             bool state = true;
             string message = "Операция выполнена успешно.";
             login = login.ToLower();
-            if(login == "")
+            if (login == "")
             {
                 return (false, "Логин не может быть пустым.");
             }
@@ -72,14 +77,12 @@ namespace TestApp.Model
             {
                 if (!DB.Users.Any(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)))
                 {
-                    User user;
                     if (rootAccess)
                     {
-                        user = new User(login, password, true);
                         isFirstExecute = false;
                     }
-                    else
-                        user = new User(login, password, false);
+                    var cryptedPassword = crypter.Encrypt(password, login);
+                    var user = new User(login, cryptedPassword, rootAccess);
                     DB.Users.Add(user);
                 }
                 else
@@ -101,7 +104,7 @@ namespace TestApp.Model
             bool state = true;
             string message = "Операция выполнена успешно.";
             User user = DB.Users.Where(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-            if(user != null)
+            if (user != null)
             {
                 if (user.RootAccess != true)
                 {
@@ -125,21 +128,21 @@ namespace TestApp.Model
         {
             bool state = true;
             string message = "Операция выполнена успешно.";
-            if (oldPassword == CurrentUser.Password)
+            if (CheckPassword(oldPassword))
             {
                 var matchPassword = Regex.Match(newPassword, @"[0-9]+[\.,:\-""?!;\(\)]+[0-9]+([\.,:\-""?!;\(\)]+[0-9]+)*");
                 if (!CurrentUser.HasConstraint || matchPassword.Success)
                 {
                     if (newPassword == verifyPassword)
                     {
-                        CurrentUser.Password = newPassword;
+                        CurrentUser.Password = crypter.Encrypt(newPassword, CurrentUser.Login);
                         DB.SaveDB();
                     }
                     else
                     {
                         state = false;
                         message = "Подтверждающий пароль введен неверно.";
-                    }   
+                    }
                 }
                 else
                 {
@@ -178,6 +181,12 @@ namespace TestApp.Model
                 message = "Пользователь с таким логином уже существует.";
             }
             return (state, message);
+        }
+
+        public bool CheckPassword(string userPassword)
+        {
+            var password = crypter.Decrypt(CurrentUser.Password, CurrentUser.Login);
+            return userPassword == password;
         }
 
         public void SaveChanges()
