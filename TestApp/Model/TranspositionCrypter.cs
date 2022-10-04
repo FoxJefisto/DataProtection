@@ -37,7 +37,10 @@ namespace TestApp.Model
 
         public string Encrypt(string text, string userName)
         {
+            //Генерация числового ключа из строки имени пользователя
             var key = GetIntKey(userName);
+            //Для достижения кратности ключу вместо усечения ключа я решил дополнять пароль пробелами.
+            //При расшифровке будет достаточно просто обрезать пробелы в конце.
             for (int i = 0; i < text.Length % key.Length; i++)
             {
                 text += " ";
@@ -74,6 +77,7 @@ namespace TestApp.Model
                     result += transposition[j];
                 }
             }
+            //Обрезаем символы пробелов в конце пароля
             return result.Trim();
         }
 

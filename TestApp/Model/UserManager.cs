@@ -29,6 +29,12 @@ namespace TestApp.Model
             isFirstExecute = !DB.LoadFromDB();
         }
 
+        /// <summary>
+        /// Выполнение входа в аккаунт
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public (bool state, string message) LogIn(string login, string password)
         {
             bool state = true;
@@ -58,11 +64,22 @@ namespace TestApp.Model
             return (state, message);
         }
 
+        /// <summary>
+        /// Выход из аккаунта
+        /// </summary>
         public void LogOut()
         {
             CurrentUser = null;
         }
 
+        /// <summary>
+        /// Регистрация нового пользователя
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        /// <param name="rootAccess"></param>
+        /// <param name="ignorePassword"></param>
+        /// <returns></returns>
         public (bool state, string message) SignUp(string login, string password, bool rootAccess = false, bool ignorePassword = false)
         {
             bool state = true;
@@ -81,6 +98,7 @@ namespace TestApp.Model
                     {
                         isFirstExecute = false;
                     }
+                    //Шифрование пароля
                     var cryptedPassword = crypter.Encrypt(password, login);
                     var user = new User(login, cryptedPassword, rootAccess);
                     DB.Users.Add(user);
@@ -99,6 +117,11 @@ namespace TestApp.Model
             return (state, message);
         }
 
+        /// <summary>
+        /// Удаление пользователя из файла
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public (bool state, string message) RemoveUser(string login)
         {
             bool state = true;
@@ -124,6 +147,13 @@ namespace TestApp.Model
             return (state, message);
         }
 
+        /// <summary>
+        /// Изменение пароля для текущего пользователя
+        /// </summary>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <param name="verifyPassword"></param>
+        /// <returns></returns>
         public (bool state, string message) ChangeCurrentUserPassword(string oldPassword, string newPassword, string verifyPassword)
         {
             bool state = true;
@@ -135,6 +165,7 @@ namespace TestApp.Model
                 {
                     if (newPassword == verifyPassword)
                     {
+                        //Шифрование нового пароля
                         CurrentUser.Password = crypter.Encrypt(newPassword, CurrentUser.Login);
                         DB.SaveDB();
                     }
@@ -158,6 +189,11 @@ namespace TestApp.Model
             return (state, message);
         }
 
+        /// <summary>
+        /// Получить всех пользователей из файла
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public ObservableCollection<User> GetAllUsers()
         {
             if (!CurrentUser.RootAccess)
@@ -165,73 +201,24 @@ namespace TestApp.Model
             return DB.Users;
         }
 
-        public (bool state, string message) RegisterLoginForUser(string login)
-        {
-            if (!CurrentUser.RootAccess)
-                throw new Exception("У данного пользователя нет таких прав.");
-            bool state = true;
-            string message = "Операция выполнена успешно.";
-            if (!DB.Users.Any(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)))
-            {
-                DB.Users.Add(new User(login, "", false));
-            }
-            else
-            {
-                state = false;
-                message = "Пользователь с таким логином уже существует.";
-            }
-            return (state, message);
-        }
-
+        /// <summary>
+        /// Сравнение пароля с расщифрованным паролем из файла
+        /// </summary>
+        /// <param name="userPassword"></param>
+        /// <returns></returns>
         public bool CheckPassword(string userPassword)
         {
             var password = crypter.Decrypt(CurrentUser.Password, CurrentUser.Login);
             return userPassword == password;
         }
 
+        /// <summary>
+        /// Сохранение изменений в файл
+        /// </summary>
         public void SaveChanges()
         {
             DB.SaveDB();
         }
 
-        //public (bool state, string message) ChangeBanStatus(string login, bool status)
-        //{
-        //    if (!CurrentUser.RootAccess)
-        //        throw new Exception("У данного пользователя нет таких прав");
-        //    bool state = true;
-        //    string message = "Операция выполнена успешно";
-        //    User user = DB.Users.Where(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-        //    if (user != null)
-        //    {
-        //        user.IsBanned = status;
-        //        DB.SaveDB();
-        //    }
-        //    else
-        //    {
-        //        state = false;
-        //        message = "Пользователь с таким логином не найден";
-        //    }
-        //    return (state, message);
-        //}
-
-        //public (bool state, string message) ChangeConstraint(string login, bool status)
-        //{
-        //    if (!CurrentUser.RootAccess)
-        //        throw new Exception("У данного пользователя нет таких прав");
-        //    bool state = true;
-        //    string message = "Операция выполнена успешно";
-        //    User user = DB.Users.Where(x => string.Equals(x.Login, login, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-        //    if (user != null)
-        //    {
-        //        user.HasConstraint = status;
-        //        DB.SaveDB();
-        //    }
-        //    else
-        //    {
-        //        state = false;
-        //        message = "Пользователь с таким логином не найден";
-        //    }
-        //    return (state, message);
-        //}
     }
 }
