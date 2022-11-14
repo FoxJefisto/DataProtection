@@ -31,7 +31,6 @@ namespace TestApp
         private void btnLogIn_Click(object sender, RoutedEventArgs e)
         {
             var userManager = (this.Owner as MainWindow).userManager;
-            bool rootAccess = userManager.isFirstExecute;
             var result = userManager.LogIn(tbLogin.Text, pbPassword.Password);
             if (result.state)
             {

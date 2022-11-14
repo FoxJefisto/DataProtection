@@ -48,14 +48,22 @@ namespace TestApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            string path = "users.json";
-            userManager = new UserManager(path);
-            if (userManager.isFirstExecute)
+            userManager = new UserManager();
+            var connectionDBWindow = new ConnectionDBWindow();
+            connectionDBWindow.Owner = this;
+            connectionDBWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            var answerConnect = connectionDBWindow.ShowDialog();
+            if (!answerConnect.Value)
+            {
+                Application.Current.Shutdown();
+            }
+            else if (userManager.isFirstExecute)
             {
                 var signUpWindow = new SignUpWindow();
                 signUpWindow.Owner = this;
-                var answerDialog = signUpWindow.ShowDialog();
-                if (!answerDialog.Value)
+                signUpWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                var answerSignUp = signUpWindow.ShowDialog();
+                if (!answerSignUp.Value)
                 {
                     Application.Current.Shutdown();
                 }
@@ -64,8 +72,9 @@ namespace TestApp
             {
                 var logInWindow = new LogInWindow();
                 logInWindow.Owner = this;
-                var answerDialog = logInWindow.ShowDialog();
-                if (answerDialog.Value)
+                logInWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                var answerLogIn = logInWindow.ShowDialog();
+                if (answerLogIn.Value)
                 {
                     SetControlsToLoginState();
                 }
@@ -137,6 +146,11 @@ namespace TestApp
         private void CloseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            userManager.CloseDB();
         }
     }
 }

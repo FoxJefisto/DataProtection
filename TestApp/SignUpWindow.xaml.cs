@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace TestApp
 {
@@ -38,7 +28,6 @@ namespace TestApp
 
         private void btnSignUp_Click(object sender, RoutedEventArgs e)
         {
-            
             var result = userManager.SignUp(tbLogin.Text, pbPassword.Password, userManager.isFirstExecute, userManager.isFirstExecute);
             tbAnswer.Foreground = Brushes.Red;
             tbAnswer.Text = result.message;

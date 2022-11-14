@@ -1,0 +1,35 @@
+﻿<Window x:Class="TestApp.ConnectionDBWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestApp"
+        mc:Ignorable="d"
+        Title="Подключение к БД" Height="250" Width="400"
+                MinHeight="220" MinWidth="300"
+        Loaded="Window_Loaded">
+    <Grid Background="#FF093054">
+        <StackPanel Orientation="Vertical" Margin="15" Background="#FF1268BD">
+            <TextBlock Text="Парольная фраза для БД" Margin="0,10,0,0" HorizontalAlignment="Center" Foreground="White"/>
+            <PasswordBox x:Name="pbPassphrase" Margin="60,0,60,0"/>
+            <TextBlock Text="Подтверждение парольной фразы" Margin="0,10,0,0" Foreground="White" HorizontalAlignment="Center"/>
+            <PasswordBox x:Name="pbСonfirm" Margin="60,0,60,0"/>
+            <Button x:Name="btnConnect" Margin="60, 10, 60, 0" HorizontalContentAlignment="Center" 
+                    Foreground="White" Background="#FF093054"
+                    Content="Подключиться" IsDefault="True"
+                    Click="btnConnect_Click"/>
+            <TextBlock x:Name="tbAnswer" HorizontalAlignment="Center" Margin="60, 10, 60, 0" TextWrapping="Wrap" FontSize="8"/>
+            <StackPanel x:Name="spDelete" Margin="60, 0, 60, 0" Orientation="Horizontal" Visibility="Collapsed">
+                <TextBlock Foreground="Red" FontSize="8" VerticalAlignment="Center" Text="Удалить существующую БД?"/>
+                <Button x:Name="btnDelete" Margin="20, 5, 0, 0"
+                    Foreground="White" Background="#FF093054" FontSize="8"
+                    Content="Удалить" IsDefault="True"
+                    Click="btnDelete_Click"/>
+                <Button x:Name="btnRestart" Margin="20, 5, 0, 0"
+                    Foreground="White" Background="#FF093054" FontSize="8"
+                    Content="Перезапустить" IsDefault="True"
+                    Click="btnRestart_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

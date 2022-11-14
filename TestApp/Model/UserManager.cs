@@ -15,18 +15,17 @@ namespace TestApp.Model
         private Database DB { get; set; }
         public User CurrentUser { get; set; } = null;
 
-        public Crypter crypter;
+        private Crypter crypter;
 
-        public string pathDatabase;
+        public string pathDatabase = "users.json";
 
         public bool isFirstExecute;
 
-        public UserManager(string pathDatabase)
+        public UserManager()
         {
-            this.pathDatabase = pathDatabase;
             DB = new Database(pathDatabase);
             crypter = Crypter.GetInstance();
-            isFirstExecute = !DB.LoadFromDB();
+            isFirstExecute = !DB.IsDBExists();
         }
 
         /// <summary>
@@ -115,6 +114,30 @@ namespace TestApp.Model
                 message = "Пароль не соответствует требованиям.";
             }
             return (state, message);
+        }
+
+        public (bool state, string message) LoadDatabase(string passphrase)
+        {
+            try
+            {
+                if (isFirstExecute)
+                {
+                    DB.GenerateKey(passphrase);
+                }
+                else
+                {
+                    DB.CalculateKey(passphrase);
+                }
+                return DB.LoadFromDB() switch
+                {
+                    true => (true, "Подключение к БД произошло успешно"),
+                    false => (false, "Не удалось подключиться к БД")
+                };
+            }
+            catch(Exception ex)
+            {
+                return (false, ex.Message);
+            }
         }
 
         /// <summary>
@@ -220,5 +243,14 @@ namespace TestApp.Model
             DB.SaveDB();
         }
 
+        public void CloseDB()
+        {
+            DB.Close();
+        }
+
+        public void DeleteDB()
+        {
+            DB.Delete();
+        }
     }
 }

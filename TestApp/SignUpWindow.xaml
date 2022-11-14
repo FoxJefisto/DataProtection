@@ -24,7 +24,7 @@
                     </ToolTip>
                 </PasswordBox.ToolTip>
             </PasswordBox>
-                <Button x:Name="btnSignUp" Margin="60, 10, 60, 0" HorizontalContentAlignment="Center" 
+            <Button x:Name="btnSignUp" Margin="60, 10, 60, 0" HorizontalContentAlignment="Center" 
                     Foreground="White" Background="#FF093054"
                     Content="Зарегистрироваться" IsDefault="True"
                     Click="btnSignUp_Click" />
