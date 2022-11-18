@@ -120,21 +120,14 @@ namespace TestApp.Model
         {
             try
             {
-                if (isFirstExecute)
-                {
-                    DB.GenerateKey(passphrase);
-                }
-                else
-                {
-                    DB.CalculateKey(passphrase);
-                }
+                DB.CalculateKey(passphrase);
                 return DB.LoadFromDB() switch
                 {
                     true => (true, "Подключение к БД произошло успешно"),
                     false => (false, "Не удалось подключиться к БД")
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return (false, ex.Message);
             }

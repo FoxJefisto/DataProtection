@@ -27,11 +27,6 @@ namespace TestApp.Model
             dbCrypter = DatabaseCrypter.GetInstance(pathToFile, pathToTempFile);
         }
 
-        public void GenerateKey(string passphrase)
-        {
-            dbCrypter.GenerateKey(passphrase);
-        }
-
         public void CalculateKey(string passphrase)
         {
             dbCrypter.CalculateKey(passphrase);

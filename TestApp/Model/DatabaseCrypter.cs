@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Org.Mentalis.Security.Cryptography;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,10 +11,7 @@ namespace TestApp.Model
     {
         private static DatabaseCrypter instance;
         private SymmetricAlgorithm rmCrypto;
-        private byte[] salt;
         private byte[] key;
-        private const int SaltCount = 64;
-        public string PathToSalt { get; init; } = "salt.json";
         private string PathToTempFile { get; init; }
         private string PathToFile { get; init; }
         public static DatabaseCrypter GetInstance(string pathToFile, string pathToTempFile)
@@ -61,56 +59,20 @@ namespace TestApp.Model
             file.Close();
         }
 
-
-
-        public void GenerateKey(string passphrase)
-        {
-            salt = new byte[SaltCount];
-            new RNGCryptoServiceProvider().GetBytes(salt);
-            SaveSalt();
-
-            var passphraseBytes = Encoding.Unicode.GetBytes(passphrase);
-            var bytes = passphraseBytes.Concat(salt).ToArray();
-            HashAlgorithm hash = MD5.Create();
-            key = hash.ComputeHash(bytes);
-        }
-
         public void CalculateKey(string passphrase)
         {
-            var passphraseBytes = Encoding.Unicode.GetBytes(passphrase);
-            salt = ReadSalt();
-            var bytes = passphraseBytes.Concat(salt).ToArray();
-            HashAlgorithm hash = MD5.Create();
-            key = hash.ComputeHash(bytes);
+            Md4 hash = Md4.Create();
+            key = hash.ComputeHash(passphrase);
         }
 
         private DatabaseCrypter(string pathToFile, string pathToTempFile)
         {
             rmCrypto = new AesManaged();
-            rmCrypto.Mode = CipherMode.CBC;
+            rmCrypto.Mode = CipherMode.CFB;
             rmCrypto.BlockSize = 128;
             rmCrypto.IV = new byte[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
             this.PathToFile = pathToFile;
             this.PathToTempFile = pathToTempFile;
-        }
-
-        private void SaveSalt()
-        {
-            var jsonString = JsonSerializer.Serialize(salt);
-            File.WriteAllText(PathToSalt, jsonString);
-        }
-
-        private byte[] ReadSalt()
-        {
-            if (File.Exists(PathToSalt))
-            {
-                var jsonString = File.ReadAllText(PathToSalt);
-                return JsonSerializer.Deserialize<byte[]>(jsonString);
-            }
-            else
-            {
-                throw new System.IO.IOException("Не удалось найти файл с \"солью\".\nБез него доступ к БД будет навсегда утерян.");
-            }
         }
     }
 }
