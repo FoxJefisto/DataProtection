@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:TestApp"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
         Title="AboutWindow" Height="250" Width="400" Foreground="White" Background="#FF1268BD">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -15,7 +15,7 @@
         <materialDesign:PackIcon Kind="Zigbee" VerticalAlignment="Center" HorizontalAlignment="Center"
                                  Width="200" Height="200" Foreground="#FF0C427C"/>
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Лабораторная работа №3" HorizontalAlignment="Center"/>
+            <TextBlock Text="Лабораторная работа №6" HorizontalAlignment="Center"/>
             <TextBlock Text="Вариант 24" HorizontalAlignment="Center"/>
             <TextBlock Text="Выполнил студент группы А-05-19" HorizontalAlignment="Center"/>
             <TextBlock Text="Филиппов Евгений" HorizontalAlignment="Center"/>

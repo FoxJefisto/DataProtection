@@ -9,22 +9,11 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="libs\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Org.Mentalis.Security">
-      <HintPath>libs\Org.Mentalis.Security.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="libs\Org.Mentalis.Security.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
 </Project>

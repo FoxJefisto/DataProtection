@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Подключение к БД" Height="250" Width="400"
                 MinHeight="220" MinWidth="300"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" WindowStartupLocation="CenterOwner">
     <Grid Background="#FF093054">
         <StackPanel Orientation="Vertical" Margin="15" Background="#FF1268BD">
             <TextBlock Text="Парольная фраза для БД" Margin="0,10,0,0" HorizontalAlignment="Center" Foreground="White"/>

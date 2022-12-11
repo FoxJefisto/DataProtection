@@ -1,0 +1,47 @@
+﻿<Window x:Class="Installer.InstallWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Installer"
+        mc:Ignorable="d"
+        Title="Установка - Lab4Project" Height="350" Width="500" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="10">
+            <TextBlock><Bold>Параметры установки</Bold></TextBlock>
+            <TextBlock Margin="15,0,0,0">Выбор параметров для установки программы "Lab6Project".</TextBlock>
+        </StackPanel>
+        <Border Grid.Row="1" BorderThickness="0,1,0,1" BorderBrush="Gray">
+            <StackPanel Margin="25,10,0,0">
+                <TextBlock Margin="0,0,0,10">Файлы программы будут установлены в следующую директорию.</TextBlock>
+                <TextBlock Margin="0,0,0,10">Если вы хотите установить программу "Lab6Project" в другую директорию, то <LineBreak/>нажмите "Обзор"
+                и укажите другую директорию.
+                </TextBlock>
+                <TextBlock Margin="0,0,0,10">Затем следует установить имя раздела реестра, куда будет сохранена подпись.</TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBox x:Name="tbPathFile" Width="300"/>
+                    <Button x:Name="btnPathFile" Content="Обзор" Margin="20, 0" Padding="20,0"
+                            Click="btnPathFile_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Margin="0,0,20,0">Имя раздела реестра:</TextBlock>
+                    <TextBox x:Name="tbSectionName"  Width="160"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Button x:Name="btnPrev" Padding="15,0" Margin="10,0" Click="btnPrev_Click">Назад</Button>
+            <Button x:Name="btnInstall" Padding="15,0" Margin="10,0" Click="btnInstall_Click">Установить</Button>
+            <Button x:Name="btnCancel" Padding="15,0" Margin="10,0" Click="btnCancel_Click">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

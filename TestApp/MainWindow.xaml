@@ -7,7 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="Лабораторная работа №4" Height="450" Width="800" Foreground="White"
-        Loaded="Window_Loaded"
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         Closed="Window_Closed">
     <Window.CommandBindings>
         <CommandBinding Command="Help" Executed="HelpCommand_Executed"/>

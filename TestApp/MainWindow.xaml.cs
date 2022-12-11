@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32;
+using System;
+using System.Security.Cryptography;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TestApp.Model;
 
 namespace TestApp
@@ -25,6 +15,12 @@ namespace TestApp
         public UserManager userManager;
         public MainWindow()
         {
+            userManager = new UserManager();
+            var inputSectionWindow = new InputSectionNameWindow();
+            if (!inputSectionWindow.ShowDialog().Value)
+            {
+                Application.Current.Shutdown();
+            }
             InitializeComponent();
         }
 
@@ -48,10 +44,8 @@ namespace TestApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            userManager = new UserManager();
             var connectionDBWindow = new ConnectionDBWindow();
             connectionDBWindow.Owner = this;
-            connectionDBWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             var answerConnect = connectionDBWindow.ShowDialog();
             if (!answerConnect.Value)
             {
@@ -61,7 +55,6 @@ namespace TestApp
             {
                 var signUpWindow = new SignUpWindow();
                 signUpWindow.Owner = this;
-                signUpWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 var answerSignUp = signUpWindow.ShowDialog();
                 if (!answerSignUp.Value)
                 {
@@ -72,7 +65,6 @@ namespace TestApp
             {
                 var logInWindow = new LogInWindow();
                 logInWindow.Owner = this;
-                logInWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 var answerLogIn = logInWindow.ShowDialog();
                 if (answerLogIn.Value)
                 {
@@ -89,7 +81,6 @@ namespace TestApp
         {
             var logInWindow = new LogInWindow();
             logInWindow.Owner = this;
-            logInWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             var answerDialog = logInWindow.ShowDialog();
             if (answerDialog.Value)
             {
@@ -123,7 +114,6 @@ namespace TestApp
         {
             var changePasswordWindow = new ChangePasswordWindow();
             changePasswordWindow.Owner = this;
-            changePasswordWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             changePasswordWindow.ShowDialog();
         }
 
@@ -131,7 +121,6 @@ namespace TestApp
         {
             var manageUsersWindow = new ManageUsersWindow();
             manageUsersWindow.Owner = this;
-            manageUsersWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             manageUsersWindow.ShowDialog();
         }
 
@@ -139,7 +128,6 @@ namespace TestApp
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.Owner = this;
-            aboutWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             aboutWindow.ShowDialog();
         }
 

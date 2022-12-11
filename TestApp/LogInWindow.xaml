@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TestApp"
         mc:Ignorable="d"
         Title="Вход" Height="220" Width="300"
-        MinHeight="220" MinWidth="300"
+        MinHeight="220" MinWidth="300" WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
     <Grid Background="#FF093054">
         <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Width="250" Background="#FF1268BD">

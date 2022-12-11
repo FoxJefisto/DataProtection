@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
+﻿using System.Text.RegularExpressions;
 
 namespace TestApp.Model
 {
